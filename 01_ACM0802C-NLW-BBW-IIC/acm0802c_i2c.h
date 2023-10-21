@@ -1,7 +1,7 @@
 /*
  * acm0802c_i2c.h
  *
- *  Created on: Sep 10, 2023
+ *  Created on: Oct 21, 2023
  *      Author: AUDIY
  */
 
@@ -81,7 +81,7 @@
 
 /* 5. Entry Mode Set
 *  Data (bin): 0b000001[I/D][S]
-*  Data (hex): 0x0[4|5|7]
+*  Data (hex): 0x0[4|5|6|7]
 *
 *  I/D: Increment/Decrement Bit
 *  0b0: cursor/blink moves to left and DDRAM address is decreased by 1.
@@ -89,11 +89,12 @@
 *
 *  S: Shift of Entire Display
 *  0b0: Shift of entire display is not performed.
-*  0b1: shift of entire display is performed according to I/D value (I/D = "1": shift left, I/D = "0": shift right).
+*  0b1: Shift of entire display is performed according to I/D value (I/D = "1": shift left, I/D = "0": shift right).
 */
-#define ENTRY_KEEP  0x04 // Shift is NOT performed: 0b00000100
-#define ENTRY_RIGHT 0x05 // Right Shift           : 0b00000101
-#define ENTRY_LEFT  0x07 // Left Shift            : 0b00000111
+#define ENTRY_CURSOR_LEFT  0x04 // Cursor/blink moves to left and DDRAM address is decreased by 1 : 0b00000100
+#define ENTRY_DISP_RIGHT   0x05 // Right shift of entire display                                  : 0b00000101
+#define ENTRY_CURSOR_RIGHT 0x06 // Cursor/blink moves to right and DDRAM address is increased by 1: 0b00000110
+#define ENTRY_DISP_LEFT    0x07 // Left shift of entire display                                   : 0b00000111
 
 /* 6. Display ON/OFF
 *  Data (bin): 0b00001[D][C][B]

@@ -1,7 +1,7 @@
 /*
  * acm0802c_i2c.c
  *
- *  Created on: Sep 10, 2023
+ *  Created on: Oct 21, 2023
  *      Author: AUDIY
  */
 
@@ -51,7 +51,7 @@ void InitACM(I2C_HandleTypeDef *hi2c, uint16_t AD) {
     ACMWriteInstruction(hi2c, AD, CLR_DISP);       // Clear Display.
     HAL_Delay(20); // wait for more than 10 ms
 
-    ACMWriteInstruction(hi2c, AD, ENTRY_KEEP);     // Entry Mode Set: Shift is NOT performed
+    ACMWriteInstruction(hi2c, AD, ENTRY_CURSOR_RIGHT); // Entry Mode Set: Cursor/blink moves to right and DDRAM address is increased by 1.
     HAL_Delay(1); // wait for more than 100 us
 }
 
@@ -83,9 +83,11 @@ void ACMPrintStr(I2C_HandleTypeDef *hi2c, uint16_t AD, uint8_t LN, const char *s
         str_len = 40; // String Length must be under 40 per Line.
     }
 
+    ACMWriteInstruction(hi2c, AD, ENTRY_CURSOR_RIGHT); // Cursor/blink moves to right and DDRAM address is increased by 1.
+    ACMWriteInstruction(hi2c, AD, LNx); // Specify the DDRAM Address.
+
     /* Print Characters in the string */
     for (i = 0; i < str_len; i++) {
-        ACMWriteInstruction(hi2c, AD, (LNx | i)); // Specify the DDRAM Address
         ACMPrintChar(hi2c, AD, str); // Write the character the DDRAM.
         str++;
     }
